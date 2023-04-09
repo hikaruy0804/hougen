@@ -6,4 +6,5 @@ pip install -qU torch==1.13.* torchtext==0.14.* torchvision==0.14.* torchaudio==
 ```
 
 Pythonファイルと同じディレクトリにmodelファイルを配置します。
-[model](https://drive.google.com/drive/folders/17x8UWojVc14KituldRJ9rckg7pGDwERm?usp=share_link)
+
+[Google Colab](https://drive.google.com/drive/folders/17x8UWojVc14KituldRJ9rckg7pGDwERm?usp=share_link)
