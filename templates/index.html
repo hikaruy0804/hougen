@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Chatbot</title>  
+    <style>
+      #message-container {
+        text-align: center;
+        background-color:#F9CCD2;
+      }
+      /* テキスト入力欄のスタイル */
+      #user-input {
+        width: 50%;
+        height: 60px;
+        font-size: 1.2rem;
+        background-color: #f5f5f5;
+        border: none;
+        border-radius: 20px;
+        padding: 10px;
+        margin-right: 10px;
+      }
+      
+      /* 送信ボタンのスタイル */
+      button[type="submit"] {
+        height: 50px;
+        border: none;
+        border-radius: 20px;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        font-size: 1.2rem;
+        cursor: pointer;
+      }
+      
+      /* 入力欄とボタンをセンタリング */
+      form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      #message-box {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        height: 400px;
+        /* overflow-y: scroll; */
+        margin-bottom: 20px;
+      }
+
+      .message {
+        background-color: #e9e9e9;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        max-width: 70%;
+      }
+
+      .bot-message {
+        align-self: flex-start;
+      }
+
+      .user-message {
+        align-self: flex-end;
+        background-color: #007bff;
+        color: white;
+      }
+
+      .user-message .message-tail {
+        border-top: 20px solid transparent;
+        border-bottom: 20px solid transparent;
+        border-right: 20px solid #007bff;
+        position: absolute;
+        right: -15px;
+        top: 5px;
+      }
+
+      .bot-message .message-tail {
+        border-top: 20px solid transparent;
+        border-bottom: 20px solid transparent;
+        border-left: 20px solid #e9e9e9;
+        position: absolute;
+        left: -15px;
+        top: 5px;
+      }
+
+      /* 送信ボタンのスタイル */
+      button[type="submit"] {
+        height: 50px;
+        border: none;
+        border-radius: 20px;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        font-size: 1.2rem;
+        cursor: pointer;
+      }
+      
+      /* 入力欄とボタンをセンタリング */
+      form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* メッセージのスタイル */
+      .message {
+        background-color: #e9e9e9;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        max-width: 70%;
+        font-size: 1.4rem;
+      }
+
+      .bot-message {
+        align-self: flex-start;
+      }
+
+      .user-message {
+        align-self: flex-end;
+        background-color: #007bff;
+        color: white;
+      }
+
+      /* メッセージテールのスタイル */
+      .user-message .message-tail {
+        display: none;
+      }
+
+      .bot-message .message-tail {
+        display: none;
+      }
+
+
+    </style>
+  </head>
+  <body>
+    <div id="message-container">
+      <h1>佐賀弁変換アプリ</h1>
+      <div id="message-box">
+        {% for message in messages %}
+          <div class="message {{ message['sender'] }}-message">
+            {% if message['sender'] == 'user' %}
+              <div class="message-tail"></div>
+            {% endif %}
+            {{ message['text'] }}
+          </div>
+        {% endfor %}
+      </div>      
+      <form method="post" action="{{ url_for('chatbot') }}">
+        <input type="text" value="ここに入力してばい" name="message" id="user-input" />
+        <button type="submit">変換する</button>
+      </form>
+    </div>
+    
+    <script>
+    const user_message = "{{ user_message }}";
+    const message = "{{ message }}";
+    if (user_message) {
+      displayMessage(user_message, "user");
+    }
+    if (message) {
+      displayMessage('test', "bot");
+    }
+
+    function displayMessage(message, sender) {
+      const messageBox = document.getElementById("message-box");
+      const messageElement = document.createElement("div");
+      messageElement.innerText = message;
+      messageElement.classList.add("message");
+      messageElement.classList.add(sender === "bot" ? "bot-message" : "user-message");
+      messageBox.appendChild(messageElement);
+
+      if (sender === "user") {
+        const messageTail = document.createElement("div");
+        messageTail.classList.add("message-tail");
+        messageElement.appendChild(messageTail);
+      }
+    }
+
+      function sendMessage() {
+        const userInput = document.getElementById("user-input");
+        const message = userInput.value;
+        displayMessage(message, "user");
+        userInput.value = "";
+        return true;
+      }
+    </script>
+    
+  </body>
+</html>
